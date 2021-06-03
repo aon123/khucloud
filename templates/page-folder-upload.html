@@ -1,0 +1,123 @@
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <title>Kloud</title>
+
+      <!-- Favicon -->
+      <link rel="shortcut icon" href="../assets/images/favicon.ico" />
+
+      <link rel="stylesheet" href="../assets/css/backend.min.css">
+      <link rel="stylesheet" href="../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+      <link rel="stylesheet" href="../assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+      <link rel="stylesheet" href="../assets/vendor/remixicon/fonts/remixicon.css">
+
+      <!-- Viewer Plugin -->
+        <!--PDF-->
+        <link rel="stylesheet" href="../assets/vendor/doc-viewer/include/pdf/pdf.viewer.css">
+        <!--Docs-->
+        <!--PPTX-->
+        <link rel="stylesheet" href="../assets/vendor/doc-viewer/include/PPTXjs/css/pptxjs.css">
+        <link rel="stylesheet" href="../assets/vendor/doc-viewer/include/PPTXjs/css/nv.d3.min.css">
+        <!--All Spreadsheet -->
+        <link rel="stylesheet" href="../assets/vendor/doc-viewer/include/SheetJS/handsontable.full.min.css">
+        <!--Image viewer-->
+        <link rel="stylesheet" href="../assets/vendor/doc-viewer/include/verySimpleImageViewer/css/jquery.verySimpleImageViewer.css">
+        <!--officeToHtml-->
+        <link rel="stylesheet" href="../assets/vendor/doc-viewer/include/officeToHtml/officeToHtml.css">
+      <script src="../assets/js/backend-bundle.min.js"></script>
+      <style type="text/css">
+          .filebox input[type="file"] {
+              position: absolute;
+              width: 0;
+              height: 0;
+              padding: 0;
+              overflow: hidden;
+              border: 0;
+            }
+
+            .filebox label {
+              display: inline-block;
+            }
+
+            /* named upload */
+            .filebox .upload-name {
+              display: inline-block;
+              height: 35px;
+              font-size:18px;
+              padding: 0 10px;
+              vertical-align: middle;
+              background-color: #f5f5f5;
+              border: 1px solid #ebebeb;
+              border-radius: 5px;
+
+            }
+      </style>
+  </head>
+  <body class=" ">
+
+      <div class="wrapper">
+      <section class="login-content">
+         <div class="container h-100">
+            <div class="row justify-content-center align-items-center height-self-center">
+               <div class="col-md-5 col-sm-12 col-12 align-self-center">
+                  <div class="sign-user_card">
+                    <img src="../assets/images/logo.png" class="img-fluid rounded-normal light-logo logo" alt="logo" style="max-height: 130px;">
+                    <p></p>
+                      <form action="page-files.html" method="post" enctype="multipart/form-data" name="">
+                          <div class="filebox">
+                              <label class="btn btn-outline-primary mt-2" for="folder">Select folder</label>
+                              <input type="file" webkitdirectory directory id="folder">
+                              <input class="upload-name" value="Select folder">
+                              <p></p>
+                              <button type="submit" class="btn btn-primary">Upload</button>
+                          </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      </div>
+
+    <!-- Backend Bundle JavaScript -->
+    <script src="../assets/js/backend-bundle.min.js"></script>
+    <script>
+        $("#folder").on('change',function(){
+          var fileName = $("#folder").val();
+          $(".upload-name").val(fileName);
+        });
+    </script>
+    <!-- Chart Custom JavaScript -->
+    <script src="../assets/js/customizer.js"></script>
+
+    <!-- Chart Custom JavaScript -->
+    <script src="../assets/js/chart-custom.js"></script>
+
+    <!--PDF-->
+    <script src="../assets/vendor/doc-viewer/include/pdf/pdf.js"></script>
+    <!--Docs-->
+    <script src="../assets/vendor/doc-viewer/include/docx/jszip-utils.js"></script>
+    <script src="../assets/vendor/doc-viewer/include/docx/mammoth.browser.min.js"></script>
+    <!--PPTX-->
+    <script src="../assets/vendor/doc-viewer/include/PPTXjs/js/filereader.js"></script>
+    <script src="../assets/vendor/doc-viewer/include/PPTXjs/js/d3.min.js"></script>
+    <script src="../assets/vendor/doc-viewer/include/PPTXjs/js/nv.d3.min.js"></script>
+    <script src="../assets/vendor/doc-viewer/include/PPTXjs/js/pptxjs.js"></script>
+    <script src="../assets/vendor/doc-viewer/include/PPTXjs/js/divs2slides.js"></script>
+    <!--All Spreadsheet -->
+    <script src="../assets/vendor/doc-viewer/include/SheetJS/handsontable.full.min.js"></script>
+    <script src="../assets/vendor/doc-viewer/include/SheetJS/xlsx.full.min.js"></script>
+    <!--Image viewer-->
+    <script src="../assets/vendor/doc-viewer/include/verySimpleImageViewer/js/jquery.verySimpleImageViewer.js"></script>
+    <!--officeToHtml-->
+    <script src="../assets/vendor/doc-viewer/include/officeToHtml/officeToHtml.js"></script>
+    <script src="../assets/js/doc-viewer.js"></script>
+    <!-- app JavaScript -->
+    <script src="../assets/js/app.js"></script>
+  </body>
+</html>

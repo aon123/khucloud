@@ -1,126 +1,238 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
-    <meta name="author" content="AdminKit">
-    <meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+    <title>Kloud</title>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="shortcut icon" href="{{url_for('static',filename='style/img/icons/icon-48x48.png')}}" />
-    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../static/images/favicon.ico" />
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/backend.min.css">
+    <link rel="stylesheet" href="../static/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../static/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="../static/vendor/remixicon/fonts/remixicon.css">
 
+    <!-- Viewer Plugin -->
+    <!--PDF-->
+    <link rel="stylesheet" href="../static/vendor/doc-viewer/include/pdf/pdf.viewer.css">
+    <!--Docs-->
+    <!--PPTX-->
+    <link rel="stylesheet" href="../static/vendor/doc-viewer/include/PPTXjs/css/pptxjs.css">
+    <link rel="stylesheet" href="../static/vendor/doc-viewer/include/PPTXjs/css/nv.d3.min.css">
+    <!--All Spreadsheet -->
+    <link rel="stylesheet" href="../static/vendor/doc-viewer/include/SheetJS/handsontable.full.min.css">
+    <!--Image viewer-->
+    <link rel="stylesheet" href="../static/vendor/doc-viewer/include/verySimpleImageViewer/css/jquery.verySimpleImageViewer.css">
+    <!--officeToHtml-->
+    <link rel="stylesheet" href="../static/vendor/doc-viewer/include/officeToHtml/officeToHtml.css"> </head>
 
-    <title>KHULOUD</title>
-
-    <link href="{{url_for('static',filename='style/css/app.css')}}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-</head>
-
-<body>
+<body class="  ">
+    <!-- loader Start -->
+    <div id="loading">
+        <div id="loading-center">
+        </div>
+    </div>
+    <!-- loader END -->
+    <!-- Wrapper Start -->
     <div class="wrapper">
-        <nav id="sidebar" class="sidebar">
-            <div class="sidebar-content js-simplebar">
-                <a class="sidebar-brand" href="index.html">
-                    <span class="align-middle">KHULOUD</span>
+
+        <div class="iq-sidebar  sidebar-default ">
+            <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
+                <a href="page-files.html" class="header-logo">
+                    <img style="height: 100px;" src="../static/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo">
                 </a>
-
-                <ul class="sidebar-nav">
-                    <li class="sidebar-header">
-                        Management
-                    </li>
-
-                    <li class="sidebar-item active">
-                        <a class="sidebar-link" href="{{url_for('index')}}">
-                            <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">My Disk</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <div class="sidebar-link" onclick="toggle_display()">
-                            <i class="align-middle" data-feather="plus"></i> <span class="align-middle">Upload File</span>
-                        </div>
-                        <div class="sidebar-link content_section" style="visibility: hidden; display: none;">
-                            <div class="col">
-                                <form action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
-                                    <div class="row" style="padding: 5px;">
-                                        <input type="file" name="name">
-                                        <input type="hidden" name="path" value="/">
-                                    </div>
-                                    <div class="row" style="padding: 5px;">
-                                        <button class="btn btn-success submit">Upload</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                    </li>
-
-                    <li class="sidebar-header">
-                        Management
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{url_for('index')}}">
-                            <i class="align-middle" data-feather="clock"></i> <span class="align-middle">Recent</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{url_for('index')}}">
-                            <i class="align-middle" data-feather="trash-2"></i> <span class="align-middle">Trash</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-        </nav>
-
-        <div class="main">
-            <nav class="navbar navbar-expand navbar-light navbar-bg">
-                <a class="sidebar-toggle d-flex">
-                    <i class="hamburger align-self-center"></i>
-                </a>
-
-                <form class="d-none d-sm-inline-block">
-                    <div class="input-group input-group-navbar">
-                        <input type="text" class="form-control" placeholder="Search…" aria-label="Search">
-                        <button class="btn" type="button">
-              <i class="align-middle" data-feather="search"></i>
-            </button>
-                    </div>
-                </form>
-
-                <div class="navbar-collapse collapse">
-                    <ul class="navbar-nav navbar-align">
-                        <li class="nav-item ">
-                            <a class="dropdown-item" href="{{url_for('logout')}}">Log out</a>
-                        </li>
-                    </ul>
+                <div class="iq-menu-bt-sidebar">
+                    <i class="las la-bars wrapper-menu"></i>
                 </div>
-            </nav>
+            </div>
+            <div class="data-scrollbar" data-scroll="1">
+                <div class="new-create select-dropdown input-prepend input-append">
+                    <div class="btn-group">
+                        <label data-toggle="dropdown">
+                      <div class="search-query selet-caption"><i class="las la-plus pr-2"></i>Upload Files</div>
+                      <span class="caret"><!--icon--></span>
+                      </label>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <div class="item"><i class="ri-file-upload-line pr-3"></i><a href="{{url_for('upload_file')}}">Upload Files</a></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <nav class="iq-sidebar-menu">
+                    <ul id="iq-sidebar-toggle" class="iq-menu">
+                        <li class="{{m}}">
+                            <a href="{{url_for('index')}}" class="">
+                                <i class="las la-hdd"></i><span>My Drive</span>
+                            </a>
+                            <ul id="page-files" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            </ul>
+                        </li>
 
-            {% block content %}{% endblock %}
-            <script src="{{url_for('static',filename='style/js/app.js')}}"></script>
-            <script>
-                function toggle_display() {
-                    el = document.querySelector('.content_section');
+                        <li class="{{t}}">
+                            <a href="{{url_for('trash')}}" class="">
+                                <i class="las la-trash-alt iq-arrow-left"></i><span>Trash</span>
+                            </a>
+                            <ul id="page-delete" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            </ul>
+                        </li>
 
-                    if (el.style.visibility == 'visible') {
-                        el.style.visibility = 'hidden'
-                        el.style.display = 'none'
-                    } else {
-                        el.style.visibility = 'visible'
-                        el.style.display = 'block'
-                    }
-                }
-            </script>
-            <script>
-                feather.replace()
-            </script>
+                    </ul>
+                </nav>
+                <div class="sidebar-bottom">
+                    <h4 class="mb-3"><i class="las la-cloud mr-2"></i>Storage</h4>
+                    <p>{{size}} / 20 GB Used</p>
+                    <div class="iq-progress-bar mb-3">
+                        <span class="bg-primary iq-progress progress-1" data-percent="{{percentage}}">
+                      </span>
+                    </div>
+                    <a href="#" class="btn btn-outline-primary view-more mt-4" onclick="customAlert('auto_delete')">Auto Delete</a>
+                </div>
+                <div class="p-3"></div>
+            </div>
+        </div>
+        <div class="iq-top-navbar">
+            <div class="iq-navbar-custom">
+                <nav class="navbar navbar-expand-lg navbar-light p-0">
+                    <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
+                        <i class="ri-menu-line wrapper-menu"></i>
+                        <a href="page-files.html" class="header-logo">
+                            <img style="height: 100px;" src="../static/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo">
+                        </a>
+                    </div>
+                    <div class="iq-search-bar device-search">
+
+                        <form action="{{url_for('index')}}" method="POST">
+                            <div class="input-prepend input-append">
+                                <div class="btn-group">
+                                    <label style="margin-top: 12px;" class="dropdown-toggle searchbox" data-toggle="dropdown">
+                                  <input class="dropdown-toggle search-query text search-input" type="text" name="search"  placeholder="Type here to search..."><span class="search-replace"></span>
+                                  <a class="search-link" href="#"><i class="ri-search-line"></i></a>
+                                  <span class="caret"><!--icon--></span>
+                                  </label>
+
+                                </div>
+                                <button class="btn btn-outline-primary mt-2 submit" style="margin-top: 12px;">Search</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
+                      <i class="ri-menu-3-line"></i>
+                      </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ml-auto navbar-list align-items-center">
+                                <li class="nav-item nav-icon search-content">
+                                    <a href="#" class="search-toggle rounded" id="dropdownSearch" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="ri-search-line"></i>
+                                    </a>
+                                    <div class="iq-search-bar iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownSearch">
+                                        <form action="#" class="searchbox p-2">
+                                            <div class="form-group mb-0 position-relative">
+                                                <input type="text" class="text search-input font-size-12" placeholder="type here to search...">
+                                                <a href="#" class="search-link"><i class="las la-search"></i></a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </li>
+
+                                <li class="nav-item nav-icon dropdown caption-content">
+                                    <a href="#" class="search-toggle dropdown-toggle" id="dropdownMenuButton03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <div style="margin-top: 12px;" class="caption bg-primary line-height">{{name[:1].upper()}}</div>
+                                    </a>
+                                    <div class="iq-sub-dropdown dropdown-menu" aria-labelledby="dropdownMenuButton03">
+                                        <div class="card mb-0">
+                                            <div class="card-header d-flex justify-content-between align-items-center mb-0">
+                                                <div class="header-title">
+                                                    <h4 class="card-title mb-0">Profile</h4>
+                                                </div>
+                                                <div class="close-data text-right badge badge-primary cursor-pointer "><i class="ri-close-fill"></i></div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="profile-header">
+                                                    <div class="cover-container text-center">
+                                                        <div class="rounded-circle profile-icon bg-primary mx-auto d-block">
+                                                            {{name[:1].upper()}}
+                                                            <a href="">
+
+                                                            </a>
+                                                        </div>
+                                                        <div class="profile-detail mt-3">
+                                                            <h5>{{name}} </a>
+                                                            </h5>
+                                                        </div>
+                                                        <a href="{{url_for('logout')}}" class="btn btn-primary">Sign Out</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="../static/js/popup.js"></script>
+    <!-- Backend Bundle JavaScript -->
+    <script src="../static/js/backend-bundle.min.js"></script>
+
+    <!-- Chart Custom JavaScript -->
+    <script src="../static/js/customizer.js"></script>
+
+    <!-- Chart Custom JavaScript -->
+    <script src="../static/js/chart-custom.js"></script>
+
+    <!--PDF-->
+    <script src="../static/vendor/doc-viewer/include/pdf/pdf.js"></script>
+    <!--Docs-->
+    <script src="../static/vendor/doc-viewer/include/docx/jszip-utils.js"></script>
+    <script src="../static/vendor/doc-viewer/include/docx/mammoth.browser.min.js"></script>
+    <!--PPTX-->
+    <script src="../static/vendor/doc-viewer/include/PPTXjs/js/filereader.js"></script>
+    <script src="../static/vendor/doc-viewer/include/PPTXjs/js/d3.min.js"></script>
+    <script src="../static/vendor/doc-viewer/include/PPTXjs/js/nv.d3.min.js"></script>
+    <script src="../static/vendor/doc-viewer/include/PPTXjs/js/pptxjs.js"></script>
+    <script src="../static/vendor/doc-viewer/include/PPTXjs/js/divs2slides.js"></script>
+    <!--All Spreadsheet -->
+    <script src="../static/vendor/doc-viewer/include/SheetJS/handsontable.full.min.js"></script>
+    <script src="../static/vendor/doc-viewer/include/SheetJS/xlsx.full.min.js"></script>
+    <!--Image viewer-->
+    <script src="../static/vendor/doc-viewer/include/verySimpleImageViewer/js/jquery.verySimpleImageViewer.js"></script>
+    <!--officeToHtml-->
+    <script src="../static/vendor/doc-viewer/include/officeToHtml/officeToHtml.js"></script>
+    <script src="../static/js/doc-viewer.js"></script>
+    <!-- app JavaScript -->
+    <script src="../static/js/app.js"></script>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Title</h4>
+                    <div>
+                        <a class="btn" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="resolte-contaniner" style="height: 500px;" class="overflow-auto">
+                        File not found
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 
