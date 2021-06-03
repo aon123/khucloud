@@ -80,7 +80,7 @@ def LoginRequired(f):
         if 'logged' in session:
             return f(*args, *kwargs)
         else:
-            return redirect(url_for('login')) 
+            return redirect(url_for('landing_page')) 
     return wrap
  
 
@@ -151,7 +151,7 @@ def register():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('landing_page'))
 
 
 ### INDEX PAGE 
@@ -178,7 +178,7 @@ def index():
                     file_len = 0
                     unused_size = 0
             else:
-                return redirect(url_for("login"))
+                return redirect(url_for("landing_page"))
             return render_template("page-files.html", data=data, size=size,  file_len = file_len, check_search=False, name=user["user_id"], percentage=unused_size, t=trash_active,m=my_drive)
         else:
             name = request.form['search'].lower()
@@ -200,7 +200,7 @@ def index():
                         data.append(i)
                         empty = False
             else:
-                return redirect(url_for('login'))
+                return redirect(url_for('landing_page'))
             file_len = len(data)
             return render_template("page-files.html", data=data, size=size,  file_len = file_len, check_search=empty,name=user["user_id"], percentage=unused_size,t=trash_active,m=my_drive)
     except Exception as e:
@@ -235,9 +235,9 @@ def upload_file():
             url = f"https://{bucket}.s3-eu-west-1.amazonaws.com/{id}"
             x = bucketDB.find_one({"_id": bucket})
             if x is not None:
-                bucketDB.update_one({"_id": bucket},{"$push": {"files": {"id": id, "name": name, "size": size, "type": ftype, "date": date, "url": url}}})
+                bucketDB.update_one({"_id": bucket},{"$push": {"files": {"id": id, "name": name, "size": size, "type": ftype, "date": date, "last_date": date,"url": url}}})
             else:
-                bucketDB.insert_one({"_id": bucket, "files":[{"id": id, "name": name, "size": size, "type": ftype, "date": date, "url": url}], "size":0, "bytes": 0})
+                bucketDB.insert_one({"_id": bucket, "files":[{"id": id, "name": name, "size": size, "type": ftype, "date": date, "last_date": date, "url": url}], "size":0, "bytes": 0})
             
             x = bucketDB.find_one({"_id": bucket})
             data = x["files"]
@@ -283,7 +283,7 @@ def trash():
             else:
                 return render_template('page-delete.html', size=size, file_len=len(data), percentage=unused_size, data=data, name=user['user_id'], check_search=False,t=trash_active, m=my_drive)
         else:
-            return redirect(url_for('login'))
+            return redirect(url_for('landing_page'))
     except Exception as e:
         print(e)
         return render_template("error.html", error=e)
@@ -308,11 +308,13 @@ def move_to_trash():
             if x is None:
                 trashDB.insert_one({"_id": bucket_id, "files": [file_info]})
             else:
+                date = datetime.now()
                 trashDB.update_one({"_id": bucket_id}, {"$push": {"files": file_info}})
+                trashDB.update_one({"_id": bucket_id , "files.id": i["id"]}, {"$set": {"files.$.last_date": date}})
             bucketDB.update_one({"_id": bucket_id}, {"$pull": {"files": {"id": id}}})
             return redirect(url_for('index'))
         else:
-            return redirect(url_for('login'))
+            return redirect(url_for('landing_page'))
     except Exception as e:
         return render_template('error.html', error=e)
 
@@ -382,7 +384,9 @@ def restore_files():
                 if i['id']==id:
                     file_info = i
             if file_info != {}:
+                date = datetime.now()
                 bucketDB.update_one({"_id": bucket_id}, {"$push": {"files": file_info}})
+                bucketDB.update_one({"_id": bucket_id , "files.id": i["id"]}, {"$set": {"files.$.last_date": date}})
                 trashDB.update_one({"_id": bucket_id}, {"$pull": {"files": {"id": i['id']}}})
                 return redirect(url_for('trash'))
             else:
@@ -414,6 +418,8 @@ def download():
         name = request.args.get('name')
         ftype = request.args.get('type')
         bucket = session["user"].lower()
+        date = datetime.now()
+        bucketDB.update_one({"_id": bucket, "files.id": id}, {"$set": {"files.$.last_date": date}})
         s3 = get_client()
         file = s3.get_object(Bucket=bucket, Key=id)
         return Response(
@@ -425,8 +431,36 @@ def download():
         print(e)
         return e
 
+### auto delete
 
+@app.route('/auto/delete')
+def auto_delete():
+    try:
+        s3 = sessions.resource('s3')
+        if "user" in session:
+            bucket_id = session['user'].lower()
+            x = trashDB.find_one({"_id": bucket_id})
+            date = datetime.now()
+            if x is not None:
+                for i in x['files']:
+                    last_edit = i['last_date']
+                    total_days = date - last_edit
+                    print(type(total_days.days))
+                    if total_days.days > 30:
+                        trashDB.update_one({"_id": bucket_id}, {"$pull": {"files": {"id": i["id"]}}})
+                        obj = s3.Object(bucket_id, i['id'])
+                        obj.delete()
+                return redirect(url_for("index"))
+            else:
+                return redirect(url_for('index'))
+        else:
+            return redirect(url_for('login'))
+    except Exception as e:
+        return render_template("error.html", error=e)
 
+@app.route('/main')
+def landing_page():
+    return render_template("landing.html")
 
 
 if __name__ == "__main__":

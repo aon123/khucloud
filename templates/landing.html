@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Your description">
+    <meta name="author" content="Your name">
+
+    <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
+    <meta property="og:site_name" content="" />
+    <!-- website name -->
+    <meta property="og:site" content="" />
+    <!-- website link -->
+    <meta property="og:title" content="" />
+    <!-- title shown in the actual shared post -->
+    <meta property="og:description" content="" />
+    <!-- description shown in the actual shared post -->
+    <meta property="og:image" content="" />
+    <!-- image link, make sure it's jpg -->
+    <meta property="og:url" content="" />
+    <!-- where do you want your post to link to -->
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Webpage Title -->
+    <title>Gemdev Webpage Title</title>
+
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link href="../static/style/css/bootstrap.css" rel="stylesheet">
+    <link href="../static/style/css/fontawesome-all.css" rel="stylesheet">
+    <link href="../static/style/css/swiper.css" rel="stylesheet">
+    <link href="../static/style/css/magnific-popup.css" rel="stylesheet">
+    <link href="../static/style/css/styles.css" rel="stylesheet">
+
+    <!-- Favicon  -->
+    <link rel="icon" href="images/favicon.png">
+</head>
+
+<body data-spy="scroll" data-target=".fixed-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
+        <div class="container">
+
+            <!-- Text Logo - Use this if you don't have a graphic logo -->
+            <!-- <a class="navbar-brand logo-text page-scroll" href="index.html">Gemdev</a> -->
+
+            <!-- Image Logo -->
+            <a class="navbar-brand logo-image" href="{{url_for('landing_page')}}"><img src="../static/images/logo.png" alt="alternative"></a>
+
+            <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#features">Features</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- end of navbar-collapse -->
+        </div>
+        <!-- end of container -->
+    </nav>
+    <!-- end of navbar -->
+    <!-- end of navigation -->
+
+
+    <!-- Header -->
+    <div class="header">
+        <div class="ocean">
+            <div class="wave"></div>
+            <div class="wave"></div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="text-container">
+                        <h1 class="h1-large">KHULOUD is secure file storage</h1>
+                        <p class="p-large">Use KHULOUD to store your files and access it wherever you want</p>
+                        <a href="{{url_for('register')}}" class="btn-solid-lg page-scroll" href="#statement">Sign Up</a>
+                    </div>
+                    <!-- end of text-container -->
+                </div>
+                <!-- end of col -->
+                <div class="col-lg-6">
+                    <div class="image-container">
+                        <img class="img-fluid" src="../static/style/images/prog.png" alt="alternative">
+                    </div>
+                    <!-- end of image-container -->
+                </div>
+                <!-- end of col -->
+            </div>
+            <!-- end of row -->
+        </div>
+        <!-- end of container -->
+    </div>
+    <!-- end of header -->
+
+
+
+
+
+    <!-- Features -->
+    <div id="features" class="basic-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="text-box bg-gray">
+                        <i class="fas fa-rocket"></i>
+                        <h4>Web framework</h4>
+                        <p>Gemdev is a young and popular web framework designed to help users build websites and web apps in half the time it would take without it</p>
+                    </div>
+                    <!-- end of text-box -->
+                </div>
+                <!-- end of col -->
+                <div class="col-lg-4">
+                    <div class="text-box bg-gray">
+                        <i class="fas fa-images"></i>
+                        <h4>Unlimited components</h4>
+                        <p>Browse the enormous component collection and find the right parts for your online project. Cards, lists, image sliders, everything you need</p>
+                    </div>
+                    <!-- end of text-box -->
+                </div>
+                <!-- end of col -->
+                <div class="col-lg-4">
+                    <div class="text-box bg-gray">
+                        <i class="fas fa-download"></i>
+                        <h4>Easy to download</h4>
+                        <p>It's very easy to download Gemdev just login with your credentials and click the green download button. The package will download instantly</p>
+                    </div>
+                    <!-- end of text-box -->
+                </div>
+                <!-- end of col -->
+            </div>
+            <!-- end of row -->
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="text-box bg-gray">
+                        <i class="fas fa-cog"></i>
+                        <h4>Simple to setup</h4>
+                        <p>With basic coding skills you can configure Gemdev down to the smallest detail. No more tutorials or browsing through knowledge bases</p>
+                    </div>
+                    <!-- end of text-box -->
+                </div>
+                <!-- end of col -->
+                <div class="col-lg-4">
+                    <div class="text-box bg-gray">
+                        <i class="fas fa-file-alt"></i>
+                        <h4>Simple licensing</h4>
+                        <p>We hear your pain and we're offering Gemdev under the MIT license, which means you can use it for any kind of project and for any number of times</p>
+                    </div>
+                    <!-- end of text-box -->
+                </div>
+                <!-- end of col -->
+                <div class="col-lg-4">
+                    <div class="text-box bg-gray">
+                        <i class="fas fa-award"></i>
+                        <h4>Great results</h4>
+                        <p>A lot of users have sent us positive feedback about the framework. That means we are on to something good here so we'll keep improving it</p>
+                    </div>
+                    <!-- end of text-box -->
+                </div>
+                <!-- end of col -->
+            </div>
+            <!-- end of row -->
+        </div>
+        <!-- end of container -->
+    </div>
+    <!-- end of basic-4 -->
+    <!-- end of features -->
+
+
+
+
+    <!-- Statistics -->
+    <div class="counter">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Counter -->
+                    <div id="counter">
+                        <div class="cell">
+                            <div class="counter-value number-count" data-count="231">1</div>
+                            <p class="counter-info">Happy Users</p>
+                        </div>
+                        <div class="cell">
+                            <div class="counter-value number-count" data-count="385">1</div>
+                            <p class="counter-info">Storage used</p>
+                        </div>
+                    </div>
+                    <!-- end of counter -->
+
+                </div>
+                <!-- end of col -->
+            </div>
+            <!-- end of row -->
+        </div>
+        <!-- end of container -->
+    </div>
+    <!-- end of counter -->
+    <!-- end of statistics -->
+
+
+    <!-- Contact -->
+    <div id="contact" class="form-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="h2-heading">Contact details</h2>
+                    <p class="p-heading">Don't hesitate to send your questions through the contact form or <a class="blue no-line" href="mailto:contact@gemdev.com">contact@gemdev.com</a></p>
+                </div>
+                <!-- end of col -->
+            </div>
+            <!-- end of row -->
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <!-- Contact Form -->
+                    <div class="form-container">
+                        <img class="decoration" src="../static/style/images/contact-envelope.svg" alt="alternative">
+                        <form>
+                            <div class="form-group">
+                                <input type="text" class="form-control-input" id="cname" required>
+                                <label class="label-control" for="cname">Name</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control-input" id="cemail" required>
+                                <label class="label-control" for="cemail">Email</label>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control-textarea" id="cmessage" required></textarea>
+                                <label class="label-control" for="cmessage">Your message</label>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control-submit-button">Submit Message</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- end of form-container -->
+                    <!-- end of contact form -->
+
+                </div>
+                <!-- end of col -->
+            </div>
+            <!-- end of row -->
+        </div>
+        <!-- end of container -->
+    </div>
+    <!-- end of form-1 -->
+    <!-- end of contact -->
+
+
+    <!-- Footer -->
+    <div class="footer bg-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="social-container">
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-facebook-f fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-twitter fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-pinterest-p fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-instagram fa-stack-1x"></i>
+                            </a>
+                        </span>
+                        <span class="fa-stack">
+                            <a href="#your-link">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-youtube fa-stack-1x"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <!-- end of social-container -->
+                </div>
+                <!-- end of col -->
+            </div>
+            <!-- end of row -->
+        </div>
+        <!-- end of container -->
+    </div>
+    <!-- end of footer -->
+    <!-- end of footer -->
+
+
+    <!-- Copyright -->
+    <div class="copyright bg-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="p-small">Copyright © <a class="no-line" href="#your-link">Your name</a></p>
+                </div>
+                <!-- end of col -->
+            </div>
+            <!-- enf of row -->
+        </div>
+        <!-- end of container -->
+    </div>
+    <!-- end of copyright -->
+    <!-- end of copyright -->
+
+
+    <!-- Scripts -->
+    <script src="../static/style/js/jquery.min.js"></script>
+    <!-- jQuery for Bootstrap's JavaScript plugins -->
+    <script src="../static/style/js/bootstrap.min.js"></script>
+    <!-- Bootstrap framework -->
+    <script src="../static/style/js/jquery.easing.min.js"></script>
+    <!-- jQuery Easing for smooth scrolling between anchors -->
+    <script src="../static/style/js/swiper.min.js"></script>
+    <!-- Swiper for image and text sliders -->
+    <script src="../static/style/js/jquery.magnific-popup.js"></script>
+    <!-- Magnific Popup for lightboxes -->
+    <script src="../static/style/js/scripts.js"></script>
+    <!-- Custom scripts -->
+</body>
+
+</html>

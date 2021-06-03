@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Kloud</title>
-
     <!-- Favicon -->
     <link rel="shortcut icon" href="../static/images/favicon.ico" />
     <link rel="stylesheet" href="../static/css/style.css">
@@ -40,7 +39,7 @@
 
         <div class="iq-sidebar  sidebar-default ">
             <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
-                <a href="page-files.html" class="header-logo">
+                <a href="{{url_for('index')}}" class="header-logo">
                     <img style="height: 100px;" src="../static/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo">
                 </a>
                 <div class="iq-menu-bt-sidebar">
@@ -78,7 +77,6 @@
                             <ul id="page-delete" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                             </ul>
                         </li>
-
                     </ul>
                 </nav>
                 <div class="sidebar-bottom">
@@ -88,7 +86,7 @@
                         <span class="bg-primary iq-progress progress-1" data-percent="{{percentage}}">
                       </span>
                     </div>
-                    <a href="#" class="btn btn-outline-primary view-more mt-4" onclick="customAlert('auto_delete')">Auto Delete</a>
+                    <a href="{{url_for('auto_delete')}}" class="btn btn-outline-primary view-more mt-4">Auto Delete</a>
                 </div>
                 <div class="p-3"></div>
             </div>
