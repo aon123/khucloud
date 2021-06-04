@@ -50,12 +50,15 @@
                 <div class="new-create select-dropdown input-prepend input-append">
                     <div class="btn-group">
                         <label data-toggle="dropdown">
-                      <div class="search-query selet-caption"><i class="las la-plus pr-2"></i>Upload Files</div>
+                      <div class="search-query selet-caption"><i class="las la-plus pr-2"></i>NEW</div>
                       <span class="caret"><!--icon--></span>
                       </label>
                         <ul class="dropdown-menu">
                             <li>
                                 <div class="item"><i class="ri-file-upload-line pr-3"></i><a href="{{url_for('upload_file')}}">Upload Files</a></div>
+                            </li>
+							<li>
+                                <div class="item"><i class="ri-file-upload-line pr-3"></i><a href="{{url_for('search_friend')}}">Add Friends</a></div>
                             </li>
                         </ul>
                     </div>
@@ -69,7 +72,20 @@
                             <ul id="page-files" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                             </ul>
                         </li>
-
+						<li class="{{f}}">
+                            <a href="{{url_for('my_friends')}}" class="">
+                                <i class="las la-user-alt iq-arrow-left"></i><span>My Friends</span>
+                            </a>
+                            <ul id="page-delete" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            </ul>
+                        </li>		
+						<li class="{{s}}">
+                            <a href="{{url_for('shared_files')}}" class="">
+                                <i class="las la-share-alt iq-arrow-left"></i><span>Shared Files</span>
+                            </a>
+                            <ul id="page-delete" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            </ul>
+                        </li>				
                         <li class="{{t}}">
                             <a href="{{url_for('trash')}}" class="">
                                 <i class="las la-trash-alt iq-arrow-left"></i><span>Trash</span>

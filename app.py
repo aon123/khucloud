@@ -11,6 +11,7 @@ from datetime import datetime
 import json
 from boto3 import client
 import re
+import ast
 
 
 app = Flask(__name__)
@@ -20,6 +21,7 @@ mydb = myclient['kloud']
 userDB = mydb['user']
 trashDB = mydb['trash']
 bucketDB = mydb["Bucket"]
+sharedDB = mydb["shared"]
 
 
 ACCESS_KEY_ID = ""
@@ -132,7 +134,7 @@ def register():
                         'LocationConstraint': 'eu-west-1'
                     },
                 )
-                userDB.insert_one({"_id":id,"user_id":user_id, "password": password, "bucket_id": id.lower()})
+                userDB.insert_one({"_id":id,"user_id":user_id, "password": password, "bucket_id": id.lower(), "friends": []})
                 return redirect(url_for("index"))
             else:
                 message = "비밀번호가 일치하지 않습니다."
@@ -162,6 +164,8 @@ def index():
     try:
         trash_active = ""
         my_drive = "active"
+        shared_active = ""
+        my_friends_active = ""
         if request.method == "GET":
             user = userDB.find_one({"_id": session["user"]})
             if user is not None:
@@ -179,7 +183,7 @@ def index():
                     unused_size = 0
             else:
                 return redirect(url_for("landing_page"))
-            return render_template("page-files.html", data=data, size=size,  file_len = file_len, check_search=False, name=user["user_id"], percentage=unused_size, t=trash_active,m=my_drive)
+            return render_template("page-files.html", data=data, size=size,  file_len = file_len, check_search=False, name=user["user_id"], percentage=unused_size, t=trash_active,m=my_drive,f=my_friends_active, s=shared_active)
         else:
             name = request.form['search'].lower()
             user = userDB.find_one({"_id": session["user"]})
@@ -202,9 +206,10 @@ def index():
             else:
                 return redirect(url_for('landing_page'))
             file_len = len(data)
-            return render_template("page-files.html", data=data, size=size,  file_len = file_len, check_search=empty,name=user["user_id"], percentage=unused_size,t=trash_active,m=my_drive)
+            return render_template("page-files.html", data=data, size=size,  file_len = file_len, check_search=empty,name=user["user_id"], percentage=unused_size,t=trash_active,m=my_drive,f=my_friends_active, s=shared_active)
     except Exception as e:
-        return render_template("error", error = e)
+        print(e)
+        return e
 
 
 
@@ -269,6 +274,8 @@ def trash():
         if user is not None:
             trash_active = "active"
             my_drive = ""
+            shared_active = ""
+            my_friends_active = ""
             data = []
             bucket_id = user['_id'].lower()
             get_bucket = bucketDB.find_one({"_id": bucket_id})
@@ -279,9 +286,9 @@ def trash():
                 for i in get_trash['files']:
                     data.append(i)
                 file_len = len(data)
-                return render_template('page-delete.html', size=size, file_len=file_len, percentage=unused_size, data=data, name=user['user_id'], check_search=False, t=trash_active, m=my_drive)
+                return render_template('page-delete.html', size=size, file_len=file_len, percentage=unused_size, data=data, name=user['user_id'], check_search=False, t=trash_active, m=my_drive,f=my_friends_active, s=shared_active)
             else:
-                return render_template('page-delete.html', size=size, file_len=len(data), percentage=unused_size, data=data, name=user['user_id'], check_search=False,t=trash_active, m=my_drive)
+                return render_template('page-delete.html', size=size, file_len=len(data), percentage=unused_size, data=data, name=user['user_id'], check_search=False,t=trash_active, m=my_drive,f=my_friends_active, s=shared_active)
         else:
             return redirect(url_for('landing_page'))
     except Exception as e:
@@ -425,7 +432,7 @@ def download():
         return Response(
             file['Body'].read(),
             mimetype=ftype,
-            headers={"Content-Disposition": f"attachment;filename={name}"}
+            headers={"Content-Disposition": f"attachment;"}
         )
     except Exception as e:
         print(e)
@@ -462,6 +469,252 @@ def auto_delete():
 def landing_page():
     return render_template("landing.html")
 
+
+@app.route('/search/friends', methods=["POST","GET"])
+def search_friend():
+    try:
+        trash_active = ""
+        my_drive = "active"
+        data = ["empty"]
+        if request.method == "GET":
+            user = userDB.find_one({"_id": session["user"]})
+            if user is not None:
+                bucket = user["_id"].lower()
+                x = bucketDB.find_one({"_id": bucket})
+                if x is not None:
+                    size = x["size"]
+                    unused_size = round(((x['bytes'] / (1024**3))*100)/20)
+                    file_len = len(data)     
+                else:
+                    size = "0"
+                    file_len = 0
+                    unused_size = 0
+            else:
+                return redirect(url_for("landing_page"))
+            return render_template("add-friend.html", data=data, size=size,  file_len = file_len, check_search=False, name=user["user_id"], percentage=unused_size, t=trash_active, m=my_drive)
+        else:
+            data = []
+            trash_active = ""
+            my_drive = "active"
+            friend_id = request.form['search']
+            user = userDB.find_one({"_id": session["user"]})
+            if user is not None:
+                bucket = user["_id"].lower()
+                x = bucketDB.find_one({"_id": bucket})
+                if x is not None:
+                    size = x["size"]
+                    unused_size = round(((x['bytes'] / (1024**3))*100)/20)
+                    file_len = len(data)     
+                else:
+                    size = "0"
+                    file_len = 0
+                    unused_size = 0
+                find_friend = userDB.find_one({"user_id": friend_id})
+                if find_friend is not None:
+                    data = [{"id": find_friend["_id"], "name": find_friend["user_id"]}]
+                    return render_template("add-friend.html", data=data, size=size,  file_len = file_len, check_search=False, name=user["user_id"], percentage=unused_size, t=trash_active, m=my_drive)
+                else:
+                    return render_template("add-friend.html", data=data, size=size,  file_len = file_len, check_search=False, name=user["user_id"], percentage=unused_size, t=trash_active, m=my_drive)
+    except Exception as e:
+        return render_template("error.html", error=e)
+
+
+@app.route('/add/to/db')
+def add_to_db():
+    try:
+        friend_id = request.args.get('id')
+        friend_name = request.args.get('name')
+        if "user" in session:
+            my_id = session["user"]
+            userDB.update_one({"_id": my_id}, {"$push": {"friends": {"id": friend_id, "name": friend_name}}})
+            return redirect(url_for('my_friends'))
+        else:
+            return redirect(url_for("landing_page"))
+    except Exception as e:
+        return e
+
+@app.route("/remove/friend")
+def remove_friend():
+    try:
+        friend_id = request.args.get('id')
+        if "user" in session:
+            userDB.update_one({"_id": session["user"]},{"$pull": {"friends": {"id": friend_id}}})
+            return redirect(url_for('my_friends'))
+        else:
+            return redirect(url_for('landing_page'))
+    except Exception as e:
+        return render_template("error.html", error=e)
+
+
+@app.route('/my/friends')
+@LoginRequired
+def my_friends():          
+    try:
+        trash_active = ""
+        my_drive = ""
+        shared_active = ""
+        my_friends_active = "active"
+        data = []
+        user = userDB.find_one({"_id": session["user"]})
+        if user is not None:
+            for i in user['friends']:
+                data.append(i)
+            bucket = user["_id"].lower()
+            x = bucketDB.find_one({"_id": bucket})
+            if x is not None:
+                size = x["size"]
+                unused_size = round(((x['bytes'] / (1024**3))*100)/20)
+                file_len = len(data)     
+            else:
+                size = "0"
+                file_len = 0
+                unused_size = 0
+        else:
+            return redirect(url_for("landing_page"))    
+        return render_template("my-friends.html", data=data, size=size,  file_len = file_len, check_search=False, name=user["user_id"], percentage=unused_size, t=trash_active, m=my_drive, f=my_friends_active, s=shared_active)
+    except Exception as e:
+        return render_template("error.html", error=e)
+
+
+
+@app.route('/share/file', methods=["GET","POST"])
+def share_file():
+    trash_active = ""
+    my_drive = ""
+    shared_active = "active"
+    my_friends_active = ""
+    data = []
+    user = userDB.find_one({"_id": session["user"]})
+    if request.method == "GET":
+        file_id = request.args.get('file_id')
+        file_info = {}
+        if user is not None:
+            for i in user['friends']:
+                data.append(i)
+            bucket = user["_id"].lower()
+            x = bucketDB.find_one({"_id": bucket})
+            if x is not None:
+                for i in x['files']:
+                    if i['id'] == file_id:
+                        file_info = i
+                file_info["bucket_id"] = bucket
+                size = x["size"]
+                unused_size = round(((x['bytes'] / (1024**3))*100)/20)
+                file_len = len(data)     
+            else:
+                size = "0"
+                file_len = 0
+                unused_size = 0
+        else:
+            return redirect(url_for("landing_page"))    
+        return render_template("share.html", data=data, size=size,  file_len = file_len, check_search=False, name=user["user_id"], percentage=unused_size, t=trash_active, m=my_drive, file_info=file_info, f=my_friends_active,s=shared_active)
+    else:
+        data = request.form.getlist('users')
+        file_id = request.args.get('file_id')
+        shared_bucket_id = request.args.get('bucket_id')
+        x = bucketDB.find_one({"_id": shared_bucket_id})
+        file_info = {}
+        if x is not None:
+            for i in x['files']:
+                if i['id'] == file_id:
+                    file_info = i
+            file_info["bucket_id"] = shared_bucket_id
+        if data is not None and file_info is not None:
+            for i in data:
+                x = sharedDB.find_one({"_id": i})
+                if x is not None:
+                    sharedDB.update_one({"_id": i}, {'$push': {'files': file_info}})
+                else:
+                    sharedDB.insert_one({"_id": i, "files": [file_info]})
+            return redirect(url_for('index'))
+        return render_template("error.html", error="Error!")
+
+
+
+@app.route('/shared/files')
+@LoginRequired
+def shared_files():
+    try:
+        user = userDB.find_one({"_id": session["user"]})
+        if user is not None:
+            trash_active = ""
+            my_drive = ""
+            shared_active = "active"
+            my_friends_active = ""
+            data = []
+            bucket_id = user['_id'].lower()
+            get_bucket = bucketDB.find_one({"_id": bucket_id})
+            size = get_bucket['size']
+            unused_size = round(((get_bucket['bytes'] / (1024**3))*100)/20)
+            get_shared = sharedDB.find_one({"_id": session["user"]})
+            if get_shared is not None:
+                for i in get_shared['files']:
+                    data.append(i)
+                file_len = len(data)
+                print(data)
+                return render_template('shared-files.html', size=size, file_len=file_len, percentage=unused_size, data=data, name=user['user_id'], check_search=False, t=trash_active, m=my_drive, f=my_friends_active, s=shared_active)
+            else:
+                return render_template('shared-files.html', size=size, file_len=len(data), percentage=unused_size, data=data, name=user['user_id'], check_search=False,t=trash_active, m=my_drive, f=my_friends_active,s=shared_active)
+        else:
+            return redirect(url_for('landing_page'))
+    except Exception as e:
+        print(e)
+        return render_template("error.html", error=e)
+
+@app.route("/remove/from/shared")
+def shared_remove_file():
+    try:
+        file_id = request.args.get('id')
+        if "user" in session:
+            x = sharedDB.find_one({"_id": session["user"]})
+            if x is not None:
+                sharedDB.update_one({"_id": session["user"]}, {"$pull": {"files": {"id": file_id}}})
+                return redirect(url_for('shared_files'))
+            else:
+                return redirect(url_for("shared_files"))
+        else:
+            return redirect(url_for("landing_page"))
+    except Exception as e:
+        return render_template("error.html", error=e)
+
+@app.route("/shared/download/file")
+def shared_download():
+    try:
+        file_id = request.args.get('id')
+        ftype = request.args.get('type')
+        print(ftype)
+        name = request.args.get('name')
+        print(name)
+        x = sharedDB.find_one({"_id": session['user']})
+        print(x)
+        if x is not None:
+            for i in x['files']:
+                if i['id'] == file_id:
+                    bucket = i['bucket_id']
+            print(bucket)
+            s3 = get_client()
+            file = s3.get_object(Bucket=bucket, Key=file_id)
+            print(file)
+            return Response(
+                file['Body'].read(),
+                mimetype=ftype,
+                headers={"Content-Disposition": f"attachment;"}
+            )
+    except Exception as e:
+        print(e)
+        return e
+
+
+@app.route('/clear/shared/files')
+def clear_shared_files():
+    try:
+        if "user" in session:
+            sharedDB.update_one({"_id": session["user"]},{"$set": {"files": []}})
+            return redirect(url_for('shared_files'))
+        else:
+            return redirect(url_for('landing_page'))
+    except Exception as e:
+        return render_template('error.html', error=e)
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000, host="127.0.0.1")

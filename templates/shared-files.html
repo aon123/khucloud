@@ -1,27 +1,28 @@
-﻿{% extends "base.html" %} {%block content%}
+{% extends "base.html" %} {%block content%}
 <div class="content-page">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="d-flex align-items-center justify-content-between welcome-content mb-3">
-                    <h4>My Drive</h4>
-                    <div class="d-flex align-items-center">
-                        <div class="list-grid-toggle mr-4">
-                            <span class="icon icon-grid i-grid"><i class="ri-layout-grid-line font-size-20"></i></span>
-                            <span class="icon icon-grid i-list"><i class="ri-list-check font-size-20"></i></span>
-                            <span class="label label-list">List</span>
+        <div class="icon icon-grid i-grid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-block card-stretch  card-transparent">
+                        <div class="d-flex align-items-center justify-content-between welcome-content mb-3">
+                            <h4> Shared Files</h4>
+                            <div class="d-flex align-items-center">
+                                <div class="list-grid-toggle mr-4">
+                                    <span class="icon icon-grid i-grid"><i class="ri-layout-grid-line font-size-20"></i></span>
+                                    <span class="icon icon-grid i-list"><i class="ri-list-check font-size-20"></i></span>
+                                    <span class="label label-list">List</span>
+                                </div>
+                                <div class="mr-4">
+                                    <a href="{{url_for('clear_shared_files')}}" class="btn btn-primary view-more">Clear</a>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        {% if check_search == True %}
+                {% if data!=[]%} {% for i in data %}
 
-        <h5>No such files</h5>
-        {% endif %}
-        <div class="icon icon-grid i-grid">
-            <div class="row">
-                {% for i in data %}
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body image-thumb">
@@ -76,15 +77,11 @@
                                 <div class="card-header-toolbar">
                                     <div class="dropdown">
                                         <span class="dropdown-toggle" id="dropdownMenuButton05" data-toggle="dropdown">
-                                                    <i class="ri-more-2-fill"></i>
-                                                </span>
+                                                <i class="ri-more-2-fill"></i>
+                                            </span>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton05">
-                                            <a class="dropdown-item" href="#" data-title="{{i['name']}}" data-load-target="#resolte-contaniner" data-url="{{i['url']}}" data-toggle="modal" data-target="#exampleModal"></i>View</a>
-                                            <a class="dropdown-item" href="{{url_for('move_to_trash', id=i['id'])}}"></i>Delete</a>
-                                            <input type="text" class="offscreen" value="{{i['url']}}" id="myUrl" aria-hidden="true">
-                                            <a class="dropdown-item" onclick="myFunction()">URL</a>
-                                            <a class="dropdown-item" href="{{url_for('share_file', file_id=i['id'])}}">Share</a>
-                                            <a class="dropdown-item" href="{{url_for('download', id=i['id'], name=i['name'], type=i['type'])}}"></i>Download</a>
+                                            <a class="dropdown-item" href="{{url_for('shared_download', id=i['id'], type=i['type'], name=i['name'])}}"><i class="ri-file-download-fill mr-2"></i>Download</a>
+                                            <a class="dropdown-item" href="{{url_for('shared_remove_file', id=i['id'])}}"><i class="ri-delete-bin-6-fill mr-2"></i>Remove</a>
                                         </div>
                                     </div>
                                 </div>
@@ -92,11 +89,33 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                {% endfor %} {% endif %}
             </div>
         </div>
+        {% if data != [] %}
         <div class="icon icon-grid i-list">
             <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-block card-stretch card-transparent">
+                        <div class="card-header d-flex justify-content-between pb-0">
+                            <div class="d-flex align-items-center justify-content-between welcome-content mb-3">
+                                <h4>Trash</h4>
+                            </div>
+                            <div class="d-flex align-items-center">
+
+                                <div class="list-grid-toggle mr-4">
+                                    <span class="icon icon-grid i-grid"><i class="ri-layout-grid-line font-size-20"></i></span>
+                                    <span class="icon icon-grid i-list"><i class="ri-list-check font-size-20"></i></span>
+                                    <span class="label label-list">List</span>
+                                </div>
+                                <div class="mr-4">
+                                    <a href="{{url_for('clear_shared_files')}}" class="btn btn-primary view-more">Clear</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-12">
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
@@ -105,37 +124,32 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Name</th>
-                                            <th scope="col">Created</th>
-                                            <th scope="col">Last Edit</th>
                                             <th scope="col">File Size</th>
                                             <th scope="col"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for i in data %}
+
+
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <div class="icon-small bg-danger rounded mr-3">
-                                                        <i class="ri-file-excel-line"></i>
+                                                    <div class="mr-3">
+                                                        <a href="#"><img src="../static/images/layouts/01.png" class="img-fluid avatar-30" alt="image1"></a>
                                                     </div>
-                                                    <div data-load-file="file" data-load-target="#resolte-contaniner" data-url="{{i['url']}}" data-toggle="modal" data-target="#exampleModal" data-title="{{i['name']}}" style="cursor: pointer;">{{i['name']}}</div>
+                                                    {{i['name']}}
                                                 </div>
                                             </td>
-                                            <td>{{i['date'].strftime('%Y-%m-%d')}} </td>
-                                            <td>{{i['last_date'].strftime('%Y-%m-%d')}} </td>
                                             <td>{{i['size']}}</td>
                                             <td>
                                                 <div class="dropdown">
-                                                    <span class="dropdown-toggle" id="dropdownMenuButton10" data-toggle="dropdown">
+                                                    <span class="dropdown-toggle" id="dropdownMenuButton6" data-toggle="dropdown">
                                                         <i class="ri-more-fill"></i>
                                                     </span>
-                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton10">
-                                                        <a class="dropdown-item" href="#" data-title="{{i['name']}}" data-load-target="#resolte-contaniner" data-url="{{i['url']}}" data-toggle="modal" data-target="#exampleModal"></i>View</a>
-                                                        <a class="dropdown-item" href="{{url_for('move_to_trash', id=i['id'])}}"></i>Delete</a>
-                                                        <input type="text" class="offscreen" value="{{i['url']}}" id="myUrl" aria-hidden="true">
-                                                        <a class="dropdown-item" onclick="myFunction()">URL</a>
-                                                        <a class="dropdown-item" href="{{url_for('download', id=i['id'], name=i['name'], type=i['type'])}}"></i>Download</a>
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton6">
+                                                        <a class="dropdown-item" href="{{url_for('shared_download', id=i['id'], type=i['type'], name=i['name'])}}"><i class="ri-file-download-fill mr-2"></i>Download</a>
+                                                        <a class="dropdown-item" href="{{url_for('shared_remove_file', id=i['id'])}}"><i class="ri-delete-bin-6-fill mr-2"></i>Remove</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -149,6 +163,8 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 </div>
-{%endblock%}
+
+{% endblock %}
